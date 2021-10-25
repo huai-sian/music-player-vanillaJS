@@ -105,18 +105,15 @@
             </div>
             <div class="col-md-8 mx-auto mt-2">
               <ul class="d-flex justify-content-center text-secondary playlist__tab mb-5 nav-pills" id="pills-tab" role="tablist">
-                <li class="nav-item" role="presentation"><a class="mx-3 playlist__tab__link nav-item-link text-secondary active" id="pills-overview-tab"
-                  data-bs-toggle="pill" data-bs-target="#pills-overview" type="button" role="tab" aria-controls="pills-overview" aria-selected="true"
+                <li class="nav-item" role="presentation"><a class="mx-3 playlist__tab__link nav-item-link text-secondary active" id="overview"
                   >OVERVIEW</a></li>
-                <li class="nav-item" role="presentation"><a class="mx-3 playlist__tab__link nav-item-link text-secondary" id="pills-artists-tab"
-                  data-bs-toggle="pill" data-bs-target="#pills-artists" type="button" role="tab" aria-controls="pills-artists" aria-selected="false"
+                <li class="nav-item" role="presentation"><a class="mx-3 playlist__tab__link nav-item-link text-secondary" id="artists"
                   >RELATED ARTISTS</a></li>
-                <li class="nav-item" role="presentation"><a class="mx-3 playlist__tab__link nav-item-link text-secondary" id="pills-about-tab"
-                  data-bs-toggle="pill" data-bs-target="#pills-about" type="button" role="tab" aria-controls="pills-about" aria-selected="false"
+                <li class="nav-item" role="presentation"><a class="mx-3 playlist__tab__link nav-item-link text-secondary" id="about"
                   >ABOUT</a></li>
               </ul>
-              <div class="mt-3 tab-content" id="pills-tabContent">
-                <div class="tab-pane text-secondary active show" id="pills-overview" role="tabpanel" aria-labelledby="pills-overview-tab">
+              <div class="mt-3 tab-content">
+                <div class="tab-pane text-secondary active" id="content-overview">
                   <ul class="px-4 playlist__ul">
                     <li class="d-flex justify-content-between align-items-center mb-3 playlist__li"
                       v-for="(song, idx) in albumData.songs" :key="idx">
@@ -147,9 +144,9 @@
                     <small style="font-size: 9px;">若音樂無法正常收聽，請至 Youtube 撥放。</small>
                   </div>
                 </div>
-                <div class="tab-pane text-success mt-3" id="pills-artists" role="tabpanel" aria-labelledby="pills-artists-tab">
+                <div class="tab-pane text-success mt-3" id="content-artists">
                   <div class="playlist__artist__list">
-                    <div class="row">
+                    <div class="row playlist__artist__row">
                       <div class="col-md-6 col-lg-4 mb-4 text-center"
                         v-for="(item, i) in sameTypeList" :key="`artist${i}`">
                         <div class="playlist__artist__img mx-auto"
@@ -162,7 +159,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="tab-pane text-success" id="pills-about" role="tabpanel" aria-labelledby="pills-about-tab">
+                <div class="tab-pane text-success" id="content-about">
                   <h5 class="text-white">The F2E - 前端修練精神時光屋 第三關 - MP3 Player</h5>
                   <small class="text-secondary">
                     使用套件 VueYoutube 串流 Youtube 音源，The F2E 練習作品，無商業用途。

@@ -295,6 +295,7 @@ $text-main: #26de85;
   &__tab {
     &__link {
       text-decoration: none;
+      padding: .2rem 0;
       &.active {
         border-bottom: 1px solid $text-main;
       }

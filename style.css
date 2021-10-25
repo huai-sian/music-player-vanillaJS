@@ -70,11 +70,6 @@
 .footer__icon {
   font-size: 1.3rem;
   cursor: pointer;
-  color: white;
-}
-
-.icon-like {
-  color: #26de85;
 }
 
 .footer__progress {
@@ -353,6 +348,7 @@
 
 .playlist__tab__link {
   text-decoration: none;
+  padding: .2rem 0;
 }
 
 .playlist__tab__link.active {

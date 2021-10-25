@@ -6,6 +6,7 @@ myModal.show();
 const data = {
   "Top Hits":[
     {
+      "id": 0,
       "album": "No song without you",
       "singer": "Honne",
       "type": "Top Hits",
@@ -46,6 +47,7 @@ const data = {
       ]
     },
     {
+      "id": 1,
       "album": "Love me / Love me not",
       "singer": "Honne",
       "type": "Top Hits",
@@ -88,6 +90,7 @@ const data = {
   ],
   "Taiwan Hits": [
     {
+      "id": 2,
       "album": "11月的蕭邦",
       "singer": "Jay Chou",
       "type": "Taiwan Hits",
@@ -128,11 +131,12 @@ const data = {
       ]
     },
     {
+      "id": 3,
       "album": "七里香",
       "singer": "Jay Chou",
       "type": "Taiwan Hits",
       "img": "./jaychou.jpeg",
-      "backgroundImg": "images//kkMaIs4wzIE357wu2AYhxcVWp8SWbV1oeTOGf3kzhn8.jpeg",
+      "backgroundImg": "images/kkMaIs4wzIE357wu2AYhxcVWp8SWbV1oeTOGf3kzhn8.jpeg",
       "followers": "1,914,830",
       "isFollow": false,
       "copyright": "© 2019 MNH ENTERTAINMENT",
@@ -170,11 +174,12 @@ const data = {
   ],
   "Spain Hits": [
     {
+      "id": 4,
       "album": "Eterno Agosto",
       "singer": "Alvaro Soler",
       "type": "Spanish Hits",
       "img": "./Eterno-Agosto-by-Alvaro-Soler.jpeg",
-      "backgroundImg": "images//titel-soler-b.jpeg",
+      "backgroundImg": "images/titel-soler-b.jpeg",
       "followers": "1,914,830",
       "isFollow": false,
       "copyright": "© 2019 MNH ENTERTAINMENT",
@@ -241,6 +246,7 @@ let repeatFlag = false;
 let continuousFlag = false;
 let defaultVolume = .7;
 let isMute = false;
+let recommend = data['Top Hits'].filter((item, idx) => idx !== 0);
 
 (function(){
   volume.value = defaultVolume * 100;
@@ -267,17 +273,19 @@ volume.addEventListener('change', function() {
 })
 
 nav_home.addEventListener('click', function() {
+  console.log('home');
   sec_home.classList.remove('d-none');
   sec_list.classList.add('d-none');
-  sec_list.classList.remove('active');
-  sec_home.classList.add('active');
+  nav_list.classList.toggle('active');
+  nav_home.classList.toggle('active');
 });
 
 nav_list.addEventListener('click', function() {
+  console.log('list');
   sec_home.classList.add('d-none');
   sec_list.classList.remove('d-none');
-  sec_list.classList.add('active');
-  sec_home.classList.remove('active');
+  nav_list.classList.toggle('active');
+  nav_home.classList.toggle('active');
 });
 
 follow.addEventListener('click', function() {
@@ -299,6 +307,8 @@ renderType();
 renderAlbum();
 loadMusic(album, musicIdx);
 loadPlaylist(album);
+tab();
+renderArtists(recommend);
 
 play.addEventListener('click', () => {
   isPlay ? pauseMusic() : playMusic();
@@ -327,7 +337,7 @@ function renderAlbum() {
     for(let j = 0; j < data[typeList[i]].length; j++) {
       albumStr +=  `<div class="col-12 col-md-4 mb-3">
                       <div class="albumList__img mx-auto mb-2"
-                        style="background-image: url(images/${data[typeList[i]][j].img})" data-idx="${j}" data-type="${typeList[i]}"></div>
+                        style="background-image: url(images/${data[typeList[i]][j].img})" data-idx="${j}" data-type="${typeList[i]}" data-id="${data[typeList[i]][j].id}"></div>
                       <p class="text-white albumList__name">${data[typeList[i]][j].album}</p>
                     </div>`;
     }
@@ -338,7 +348,7 @@ function renderAlbum() {
   console.log(albumList__img.length);
   albumList__img.forEach(item => {
     item.addEventListener('click', directToSingle);
-  })
+  });
 }
 
 function loadMusic(album, idx) {
@@ -435,17 +445,48 @@ function continuousMusic() {
 }
 
 function directToSingle() {
-  let tempidx = this.dataset.idx;
+  let tempidx = this.dataset.id;
   let tempType = this.dataset.type;
   album = data[tempType][tempidx];
+  recommend = data[tempType].filter((item, idx) => item.id != parseInt(tempidx));
+  let tempId;
+  data[tempType].forEach((item, i) => {
+    if(item.id == tempidx) {
+      tempId = i;
+    };
+  })
+  album = data[tempType][tempId];
+
+  console.log(recommend);
+  renderArtists(recommend);
   musicIdx = 0;
   sec_home.classList.add('d-none');
   sec_list.classList.remove('d-none');
+  nav_list.classList.toggle('active');
+  nav_home.classList.toggle('active');
   loadMusic(album, musicIdx);
   audio.duration = 0;
   playMusic();
   console.log(album);
   loadPlaylist(album);
+}
+
+function renderArtists(d) {
+  let str = '';
+  console.log(d);
+  for(let i = 0; i < d.length; i++) {
+    str += `<div class="col-md-6 col-lg-4 mb-4 text-center">
+              <div class="playlist__artist__img mx-auto" style="background-image: url(${d[i].backgroundImg});" data-idx="${i}" data-type="${d[i].type}" data-id="${d[i].id}"></div>
+              <small class="playlist__artist__name text-white mt-2 d-inline-block">
+                ${d[i].singer}
+              </small>
+            </div>`
+  }
+  $('.playlist__artist__row').html(str);
+  const albumList__img = document.querySelectorAll('.playlist__artist__img');
+  albumList__img.forEach(item => {
+    item.addEventListener('click', directToSingle);
+  });
 }
 
 function loadPlaylist(album) {
@@ -476,15 +517,17 @@ function loadPlaylist(album) {
     $(this).next().toggleClass('d-none');
   });
   $('.icon-like').click(toggleLike);
-  $('.playlist__li').click(changeSong);
+  $('.playlist__li__name').click(changeSong);
 }
 
 function toggleLike() {
   console.log($(this));
   if($(this).text() === 'favoriter') {
     $(this).text('favorite_border');
+    $(this).removeClass('text-success');
   } else {
     $(this).text('favoriter');
+    $(this).addClass('text-success');
   }
 }
 
@@ -498,6 +541,20 @@ function changeSong() {
 
 function directTo(id) {
   window.location.href = `https://www.youtube.com/watch?v=${id}`;
+}
+
+function tab() {
+  $('.tab-content>div').hide();
+  $('.tab-content>div:first').show();
+  
+  $('.playlist__tab__link').click('click', function(e) {
+    e.preventDefault();
+    $('.tab-content>div').hide();
+    $('.playlist__tab__link').removeClass('active');
+    $(this).addClass('active');
+    const target = $(this).attr('id');
+    $(`#content-${target}`).show();
+  })
 }
 
 audio.addEventListener('timeupdate', updateProgress);
