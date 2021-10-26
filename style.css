@@ -204,6 +204,10 @@
   background: #26de85;
 }
 
+.footer .icon__repeat, .footer .icon__shuffle, .footer .footer__mute {
+  color: #fff;
+}
+
 .albumList {
   background-color: #212121;
   padding-bottom: 140px !important;
@@ -442,5 +446,9 @@
   opacity: 0;
   -webkit-transition: opacity .3s;
   transition: opacity .3s;
+}
+
+.tab-pane {
+  min-height: 40vh;
 }
 /*# sourceMappingURL=style.css.map */

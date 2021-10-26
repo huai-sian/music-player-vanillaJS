@@ -176,6 +176,9 @@ $text-main: #26de85;
   &__volumn::-webkit-slider-thumb {
     background: $text-main;
   }
+  .icon__repeat, .icon__shuffle, .footer__mute {
+    color: #fff;
+  }
 }
 
 .albumList {
@@ -377,5 +380,9 @@ $text-main: #26de85;
     }
     }
   }
+}
+
+.tab-pane {
+  min-height: 40vh;
 }
 

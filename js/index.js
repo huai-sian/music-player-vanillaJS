@@ -356,6 +356,8 @@ function loadMusic(album, idx) {
   footer_singer.textContent = album.singer;
   footer_song.textContent = album.songs[idx].song;
   audio.src = album.songs[idx].videoId;
+  musicDurationTime.textContent = album.songs[idx].duration;
+  console.log(album.songs[idx].duration);
 }
 
 function playMusic() {
@@ -442,6 +444,11 @@ function repeatMusic() {
 
 function continuousMusic() {
   continuousFlag = !continuousFlag;
+  if(continuousFlag){
+    continuous.style.color = '#26de85';
+  } else {
+    continuous.style.color = 'white';
+  }
 }
 
 function directToSingle() {
@@ -498,7 +505,7 @@ function loadPlaylist(album) {
     listStr += `<li class="d-flex justify-content-between align-items-center mb-3 playlist__li" data-song="${album.songs[i]}" data-index="${i}">
                   <div class="d-flex align-items-center">
                     <small class="playlist__li__num me-2">${i + 1}</small>
-                    <span class="playlist__li__name">${album.songs[i].song}</span>
+                    <span class="playlist__li__name" data-index="${i}">${album.songs[i].song}</span>
                   </div>
                   <div class="d-flex align-items-center justify-content-around">
                     <small class="playlist__li__duration">${album.songs[i].duration}</small>
@@ -534,6 +541,7 @@ function toggleLike() {
 function changeSong() {
   console.log(parseInt($(this).data('index')));
   musicIdx = parseInt($(this).data('index'));
+  console.log(album, musicIdx);
   loadMusic(album, musicIdx);
   audio.duration = 0;
   playMusic();
